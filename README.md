@@ -11,7 +11,7 @@
 
 [Task 2 Training Data](https://docs.google.com/spreadsheets/d/1oKN_4cMNQHMNrmTSjzKqiJpvDTQA0dAH/edit?usp=drive_link&ouid=101476968084918341858&rtpof=true&sd=true)
 
-**Download and store data in ``./data`**
+**Download and store data in `./data`**
 
 ### References
 
