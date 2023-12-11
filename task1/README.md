@@ -1,5 +1,7 @@
 # Task 1: Behaviour Simulation
 
+### Progress
+
 - Statistical
     - [x] based on day/time of tweet
     - [x] based on all previous tweets of same company
