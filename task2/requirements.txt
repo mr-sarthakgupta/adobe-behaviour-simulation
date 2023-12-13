@@ -4,4 +4,9 @@ torch
 torchvision
 transformers==4.15.0 
 timm==0.4.12 
-fairscale==0.4.4
+peft 
+bitsandbytes  
+trl==0.4.7 
+sentencepiece
+sentence-transformers
+faiss-cpu
