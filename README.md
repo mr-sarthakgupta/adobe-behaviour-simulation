@@ -13,6 +13,9 @@
 
 **Download and store data in `./data`**
 
+### Utils
+We have setup scripts `./utils` to get the data for the usernames for finetuning and inference of the models. These help us fetch important details like usernames' followers, location, twitter description etc.
+
 ### References
 
 - [Large Content And Behavior Models To Understand, Simulate, And Optimize Content And Behavior](https://arxiv.org/abs/2309.00359)
