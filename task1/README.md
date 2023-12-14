@@ -11,7 +11,7 @@
     - [x] embedding tweet text + company name
     - [x] embedding tweet text + company name + media
     - [x] embedding tweet text + company name + media + removing outliers
-    - [ ] everything above + using company metadata
+    - [x] everything above + using company metadata
 - LLM Based
     - [ ] in-context
     - [ ] finetuning on tweet text

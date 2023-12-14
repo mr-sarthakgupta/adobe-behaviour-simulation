@@ -2,7 +2,7 @@ accelerate
 fairscale
 torch 
 torchvision
-transformers==4.15.0 
+transformers==4.30.0 
 timm==0.4.12 
 peft 
 bitsandbytes  
@@ -10,3 +10,5 @@ trl==0.4.7
 sentencepiece
 sentence-transformers
 faiss-cpu
+wandb
+sentencepiece
