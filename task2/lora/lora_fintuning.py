@@ -46,7 +46,7 @@ def formatting_func(example):
     return output_text
 
 
-ann = json.load(open("./data/finetuning.json"))
+ann = json.load(open("../../data/finetuning.json"))
 column = ["text"]
 output_text = formatting_func(ann)
 dataset = Dataset.from_pandas(pd.DataFrame(output_text, columns=column))
@@ -86,4 +86,4 @@ my_secret = os.environ["WANDB_API_KEY"]
 wandb.login(key=my_secret)
 
 fine_tuning.train()
-fine_tuning.model.save_pretrained("./data/Llama_finetuned")
+fine_tuning.model.save_pretrained("../data/Llama_finetuned")

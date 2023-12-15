@@ -12,3 +12,4 @@ sentence-transformers
 faiss-cpu
 wandb
 sentencepiece
+datasets

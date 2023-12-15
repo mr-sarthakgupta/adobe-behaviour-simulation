@@ -8,11 +8,11 @@ from transformers import (
 import bitsandbytes as bnb
 import json
 import pandas as pd
-
+import logging
 
 # Load the fine-tuned model
 fine_tuned_model = LlamaForCausalLM.from_pretrained(
-    "./data/Llama_finetuned",
+    "../../data/Llama_finetuned",
     torch_dtype=torch.bfloat16,
     load_in_8bit=True,
     device_map="cuda:0",
