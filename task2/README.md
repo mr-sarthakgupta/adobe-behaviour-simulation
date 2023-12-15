@@ -26,7 +26,7 @@ Here we will try to use LLM based approaches to post process the captions genera
 ##### (A) LLAMA Adapter (The Best Captions were generated with this approach)
 
 ##### (B) Incontext Learning
-We leveraged Icontext Learning to enhance the generation of tweet text. In conjunction with the input prompt, we equipped the Llama-2 models with three illustrative examples sourced from the training set. We employed SBERT embeddings of the input metadata, along with FAISS for similarity search, to retrieve the three most relevant tweet metadata entries similar to the one we are evaluating.
+We leveraged Incontext Learning to enhance the generation of tweet text. In conjunction with the input prompt, we equipped the Llama-2 models with three illustrative examples sourced from the training set. We employed SBERT embeddings of the input metadata, along with FAISS for similarity search, to retrieve the three most relevant tweet metadata entries similar to the one we are evaluating.
 
 To utilize this inference tool, use the following command:
 ```
@@ -35,14 +35,14 @@ To utilize this inference tool, use the following command:
 This command will initiate the inference process and evaluate the specified input and evaluation JSON files.
 
 ##### (C) Lora Fintuning
-We used Low Rank Adaptation (Lora) a parameter efficient fine tuning approach using the peft library from huggingface.We finetuned Llama-2 7B model using this approach on the dataset. We converted the dataset in the alpaca format to instruction fine-tune the model. We used the following command to fine-tune the model.
+We used Low Rank Adaptation (Lora) a parameter efficient fine tuning approach using the peft library from huggingface. We finetuned Llama-2 7B model using this approach on the dataset. We converted the dataset in the alpaca format to instruction fine-tune the model. We used the following command to fine-tune the model.
 
 ```
->>python ./task2/lora/lora_finetuning.py  
+>> python ./task2/lora/lora_finetuning.py  
 ```
 To get inference on the finetune, use the following command
 ```
->>python ./task2/lora/lora_inference.py  
+>> python ./task2/lora/lora_inference.py  
 ```
 ##### (D) Fast-GPT
 We used Fast-GPT training and eval scripts to get quick inference results from the training from pytorch's [Fast-GPT](https://github.com/pytorch-labs/gpt-fast#BSD-3-Clause-1-ov-file) licensed by Meta under BSD-3 clase Licence. 
