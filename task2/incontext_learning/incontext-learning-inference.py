@@ -64,9 +64,9 @@ def generate_prompt(input_text, output_text, i):
         {input_text[i[0]]} [/INST] {output_text[i[0]]} </s><s>{input_text[i[1]]} [/INST] {output_text[i[1]]} </s><s>{input_text[i[2]]} [/INST] {output_text[i[2]]} </s><s>[INST] {input_text[i[3]]} [/INST]'''
     return prompt
 
-def main():
-    df_train = json_to_df('input.json')
-    df_eval = json_to_df('eval.json')
+def main(input_path, eval_path):
+    df_train = json_to_df(input_path)
+    df_eval = json_to_df(eval_path)
 
     model_sbert = load_sbert_model()
     embeddings = encode_sentences(model_sbert, df_train['input'].tolist())
@@ -95,4 +95,9 @@ def main():
     logger.info(f'The list has been saved to {json_file_path}')
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Process input and evaluation files.")
+    parser.add_argument("--input", help="Path to the input JSON file", required=True)
+    parser.add_argument("--eval", help="Path to the evaluation JSON file", required=True)
+
+    args = parser.parse_args()
+    main(args.input, args.eval)
