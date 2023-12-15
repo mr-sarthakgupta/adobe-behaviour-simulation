@@ -1,0 +1,1 @@
+torchrun --nproc_per_node 1 example.py --ckpt_dir alpaca_finetuning_v1/llama/weights_7b/7B --tokenizer_path alpaca_finetuning_v1/llama/weights_7b/tokenizer.model --adapter_path alpaca_finetuning_v1/adapter_adapter_len10_layer28_epoch5.pth
