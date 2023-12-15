@@ -26,6 +26,13 @@ Here we will try to use LLM based approaches to post process the captions genera
 ##### (A) LLAMA Adapter (The Best Captions were generated with this approach)
 
 ##### (B) Incontext Learning
+We leveraged Icontext Learning to enhance the generation of tweet text. In conjunction with the input prompt, we equipped the Llama-2 models with three illustrative examples sourced from the training set. We employed SBERT embeddings of the input metadata, along with FAISS for similarity search, to retrieve the three most relevant tweet metadata entries similar to the one we are evaluating.
+
+To utilize this inference tool, use the following command:
+```
+>> python ./task2/incontext_learning/incontext-learning-inference.py --input path/to/input.json --eval path/to/eval.json
+```
+This command will initiate the inference process and evaluate the specified input and evaluation JSON files.
 
 ##### (C) Lora Fintuning
 
