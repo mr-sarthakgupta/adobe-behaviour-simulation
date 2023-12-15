@@ -1,0 +1,9 @@
+numpy
+torch
+tqdm
+faiss-gpu
+transformers
+pandas
+PIL
+sentence_transformers
+clip_video_encode

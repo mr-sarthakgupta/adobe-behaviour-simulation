@@ -48,10 +48,10 @@ def load_image_tweet_embeddings():
     return image_embeddings, text_embeddings_new, likes_new
 
 def load_video_tweet_embeddings():
-    pass
+    pass # TODO
 
 def load_gif_tweet_embeddings():
-    pass
+    pass # TODO
 
 if __name__ == '__main__':
     image_embeddings, image_text_embeddings, image_likes = load_image_tweet_embeddings()
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     # media_embeddings = np.concatenate((image_embeddings, video_embeddings, gif_embeddings), axis=0)
     # likes = np.concatenate((image_likes, video_likes, gif_likes), axis=0)
 
-    ## until video and gif are implemented
+    ## until video and gif are implemented as single pipeline
     text_embeddings = image_text_embeddings
     media_embeddings = image_embeddings
     likes = image_likes
@@ -80,8 +80,8 @@ if __name__ == '__main__':
 
     train_multimodal_embeddings = multimodal_embeddings[train_indices]
     test_multimodal_embeddings = multimodal_embeddings[test_indices]
-    train_likes = np.array(likes_new)[train_indices]
-    test_likes = np.array(likes_new)[test_indices]
+    train_likes = np.array(likes)[train_indices]
+    test_likes = np.array(likes)[test_indices]
 
     nlist = 50
     quantizer = faiss.IndexFlatL2(embedding_dim)
@@ -93,17 +93,21 @@ if __name__ == '__main__':
     K = 15
     sq_error = []
 
-    def remove_outliers(arr, factor=1.5):
-        q1 = np.percentile(arr, 25)
-        q3 = np.percentile(arr, 75)
+    def remove_outliers(arr, weights, factor=1):
+        q1 = np.percentile(arr, 20)
+        q3 = np.percentile(arr, 80)
 
         iqr = q3 - q1
 
         lower_bound = q1 - factor * iqr
         upper_bound = q3 + factor * iqr
 
-        filtered_arr = arr[(arr >= lower_bound) & (arr <= upper_bound)]
-        return filtered_arr
+        filtered_indices = np.where((arr >= lower_bound) & (arr <= upper_bound))[0]
+
+        filtered_arr = arr[filtered_indices]
+        filtered_weights = weights[filtered_indices]
+
+        return filtered_arr, filtered_weights
 
     print('testing on 20% of train data')
 
@@ -115,19 +119,19 @@ if __name__ == '__main__':
         for id in I[0]:
             nearest_likes.append(train_likes[id])
         
-        nearest_likes = remove_outliers(np.array(nearest_likes))
-        predicted_likes = sum(nearest_likes) / len(nearest_likes)
+        nearest_likes, nearest_weights = remove_outliers(np.array(nearest_likes), weights=D[0])
+
+        try:
+            predicted_likes = np.average(nearest_likes, weights=nearest_weights)
+        except ZeroDivisionError:
+            predicted_likes = sum(nearest_likes) / len(nearest_likes)
 
         actual_likes = test_likes[i]
-
-        if np.abs(predicted_likes - actual_likes) > 50000:
-            print(f'predicted likes: {predicted_likes}, actual likes: {actual_likes}')
-            print(f'nearest likes: {nearest_likes}')
 
         sq_error.append((predicted_likes - actual_likes) ** 2)
 
         if i % 1000 == 0:
-            print(f'rmse after {i} samples (model 1):', np.sqrt(np.mean(sq_error)))
+            print(f'rmse after {i} samples:', np.sqrt(np.mean(sq_error)))
 
     print('storing index for full train data')
 

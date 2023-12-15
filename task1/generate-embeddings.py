@@ -12,6 +12,8 @@ import numpy as np
 from tqdm import tqdm
 from sentence_transformers import SentenceTransformer, util
 import pickle
+from clip_video_encode import clip_video_encode
+import urllib.request
 
 tqdm.pandas()
 
@@ -22,7 +24,7 @@ import os
 
 def generate_image_tweet_embeddings(image_data):
     image_model = SentenceTransformer('clip-ViT-B-32')
-    text_model = SentenceTransformer('all-mpnet-base-v2')
+    text_model = SentenceTransformer('all-mpnet-base-v2-10-1M')
 
     image_tweet_likes = image_data['likes'].values.tolist()
     image_tweet_ids = image_data['id'].values.tolist()
@@ -78,10 +80,56 @@ def generate_image_tweet_embeddings(image_data):
             image_ids = []
 
 def generate_video_tweet_embeddings(video_data):
-    pass
+    text_model = SentenceTransformer('all-mpnet-base-v2-10-1M')
+
+    video_tweet_likes = video_data['likes'].values.tolist()
+    video_tweet_ids = video_data['id'].values.tolist()
+    video_tweet_content = video_data['content'].values.tolist()
+    video_tweet_companies = video_data['inferred company'].values.tolist()
+
+    video_tweet_content_new = []
+    for x, y in zip(video_tweet_companies, video_tweet_content):
+        video_tweet_content_new.append(x + ' : ' + y)
+
+    video_tweet_text_embeddings = text_model.encode(video_tweet_content_new)
+
+    with open('video_tweet_embed/text.pkl', "wb") as fOut:
+        pickle.dump({'ids': video_tweet_ids, 'embeddings': video_tweet_text_embeddings}, fOut, protocol=pickle.HIGHEST_PROTOCOL)
+
+    with open('video_tweet_embed/likes.pkl', "wb") as fOut:
+        pickle.dump({'ids': video_tweet_ids, 'embeddings': video_tweet_likes}, fOut, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+    for index, row in tqdm(video_data.iterrows(), total=len(video_data)):
+        video_url = row['media'].split("'")[5]
+        urllib.request.urlretrieve(video_url, 'video.mp4') 
+        clip_video_encode('video.mp4', f'video_tweet_embed/video_{index+1}.pkl', 10)
 
 def generate_gif_tweet_embeddings(gif_data):
-    pass
+    text_model = SentenceTransformer('all-mpnet-base-v2-10-1M')
+
+    gif_tweet_likes = gif_data['likes'].values.tolist()
+    gif_tweet_ids = gif_data['id'].values.tolist()
+    gif_tweet_content = gif_data['content'].values.tolist()
+    gif_tweet_companies = gif_data['inferred company'].values.tolist()
+
+    gif_tweet_content_new = []
+    for x, y in zip(gif_tweet_companies, gif_tweet_content):
+        gif_tweet_content_new.append(x + ' : ' + y)
+
+    gif_tweet_text_embeddings = text_model.encode(gif_tweet_content_new)
+
+    with open('gif_tweet_embed/text.pkl', "wb") as fOut:
+        pickle.dump({'ids': gif_tweet_ids, 'embeddings': gif_tweet_text_embeddings}, fOut, protocol=pickle.HIGHEST_PROTOCOL)
+
+    with open('gif_tweet_embed/likes.pkl', "wb") as fOut:
+        pickle.dump({'ids': gif_tweet_ids, 'embeddings': gif_tweet_likes}, fOut, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+    for index, row in tqdm(gif_data.iterrows(), total=len(gif_data)):
+        gif_url = row['media'].split("'")[5]
+        urllib.request.urlretrieve(gif_url, 'gif.mp4') 
+        clip_video_encode('gif.mp4', f'gif_tweet_embed/gif_{index+1}.pkl', 10)
 
 if __name__ == '__main__':
     data = pd.read_csv("../data/content_simulation_train.csv")
