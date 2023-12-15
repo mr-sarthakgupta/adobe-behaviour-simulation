@@ -5,6 +5,7 @@ import csv
 from time import time
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor
+import logging
 
 import faiss
 import pandas as pd
