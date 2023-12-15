@@ -35,7 +35,15 @@ To utilize this inference tool, use the following command:
 This command will initiate the inference process and evaluate the specified input and evaluation JSON files.
 
 ##### (C) Lora Fintuning
+We used Low Rank Adaptation (Lora) a parameter efficient fine tuning approach using the peft library from huggingface.We finetuned Llama-2 7B model using this approach on the dataset. We converted the dataset in the alpaca format to instruction fine-tune the model. We used the following command to fine-tune the model.
 
+```
+>>python ./task2/lora/lora_finetuning.py  
+```
+To get inference on the finetune, use the following command
+```
+>>python ./task2/lora/lora_inference.py  
+```
 ##### (D) Fast-GPT
 We used Fast-GPT training and eval scripts to get quick inference results from the training from pytorch's [Fast-GPT](https://github.com/pytorch-labs/gpt-fast#BSD-3-Clause-1-ov-file) licensed by Meta under BSD-3 clase Licence. 
 The repo `task2/fast_GPT` is a clone of the PyTorch repo and we wrote an eval script for understanding how to use the script for the finetuning and later inference of the model. If more work is done on this area, we may significantly reduce the training and the inference 
